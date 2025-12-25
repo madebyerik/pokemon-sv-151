@@ -36,7 +36,7 @@ const CollectionTypeFilter = ({
         {
           (["COLORLESS", "DARKNESS", "DRAGON", "FIGHTING", "FIRE", "GRASS", "LIGHTNING", "PSYCHIC", "WATER"] as PokemonType[]).map((t, i) => (
             <button
-              className={`c-collection-sidebar__chip ${filters.types.includes(t) ? `c-collection-sidebar__chip--active` : ''} c-collection-sidebar__chip--${capitalize(t.split("_").join(" "))}`} 
+              className={`c-collection-sidebar__chip ${filters.types.includes(t) ? `c-collection-sidebar__chip--active` : ''} c-collection-sidebar__chip--${t.split("_").join(" ").toLowerCase()}`} 
               id={t}
               onClick={() => handleTypeChip(t)}>
               <TypeIcon type={t} />

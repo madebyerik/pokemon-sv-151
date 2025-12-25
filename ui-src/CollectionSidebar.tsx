@@ -37,18 +37,20 @@ const CollectionSidebar = ({
           style={{
             transform: transitionStyle.transform
           }}>
-          <CollectionSidebarHeader
-            state={state}
-            dispatch={dispatch} />
-          <CollectionQueryFilter
-            state={state}
-            dispatch={dispatch} />
-          <CollectionRarityFilter
-            state={state}
-            dispatch={dispatch} />
-          <CollectionTypeFilter
-            state={state}
-            dispatch={dispatch} />
+          <div className="c-collection-sidebar__scroll">
+            <CollectionSidebarHeader
+              state={state}
+              dispatch={dispatch} />
+            <CollectionQueryFilter
+              state={state}
+              dispatch={dispatch} />
+            <CollectionRarityFilter
+              state={state}
+              dispatch={dispatch} />
+            <CollectionTypeFilter
+              state={state}
+              dispatch={dispatch} />
+          </div>
         </a.div>
       </div>
     )

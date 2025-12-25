@@ -35,6 +35,7 @@
 
 .c-collection-nav__collected {
   display: flex;
+  flex: 0 0 auto;
   justify-content: center;
   align-items: center;
   padding: 8px 12px;

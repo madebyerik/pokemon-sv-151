@@ -1,6 +1,8 @@
 .c-collection-card {
   position: relative;
   display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
   aspect-ratio: 733/1024;
   border-radius: var(--border-radius);
   background: linear-gradient(to bottom right, rgba(0,0,0,0.02), rgba(0,0,0, 0.05));
@@ -9,6 +11,8 @@
 
 .c-collection-card__img {
   z-index: 2;
+  object-fit: contain;
+  min-width: 0;
 }
 
 .c-collection-card__index {
