@@ -1,0 +1,75 @@
+/* Absolute, non-interactive overlay above the entire app */
+.c-god-pack-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+  animation: fade-in 0.25s linear;
+}
+
+@property --portal-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Rotating blurred conic-gradient border */
+.c-god-pack-overlay::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+
+  /*
+   * Push the border outward so its blurred outer half is clipped,
+   * while its inner half remains visible as a glowing rim.
+   */
+  inset: -1em;
+  border: solid 1.25em;
+
+  border-image: conic-gradient(
+    from var(--portal-angle),
+    #fff7c8,
+    #ffca45,
+    #ff7a0b,
+    #873100,
+    #ffb11e,
+    #fff3aa,
+    #d94d00,
+    #ff8a12,
+    #fff7c8
+  ) 1;
+
+  filter: blur(0.75em);
+  animation: portal-vortex-spin 4s linear infinite;
+}
+
+/* Inner-only bloom, leaving the middle of the app visible */
+.c-god-pack-overlay::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+
+  box-shadow:
+    inset 0 0 16px rgb(255 239 168 / 0.9),
+    inset 0 0 48px rgb(255 159 26 / 0.65),
+    inset 0 0 96px rgb(199 61 0 / 0.3);
+
+  animation: portal-bloom-pulse 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes portal-vortex-spin {
+  to { --portal-angle: 1turn; }
+}
+
+@keyframes portal-bloom-pulse {
+  to { opacity: 0.75; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

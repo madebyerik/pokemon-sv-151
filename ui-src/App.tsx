@@ -33,7 +33,9 @@ const App = () => {
         cardIndex: 0
       },
       available: Infinity,
-      lastOpened: null
+      lastOpened: null,
+      godPackEnabled: false,
+      godPackCooldownEndsAt: null
     },
     collection: {
       cards: {}

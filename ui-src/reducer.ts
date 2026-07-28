@@ -99,6 +99,8 @@ export type Packs = {
   current: Pack;
   available: number;
   lastOpened: number | null;
+  godPackEnabled: boolean;
+  godPackCooldownEndsAt: number | null;
 }
 
 export type View = "collection" | "packs";
@@ -137,7 +139,10 @@ export type Action =
   | { type: "SET_NEW_CURRENT_PACK", cards: string[] }
   | { type: "SET_CURRENT_PACK_CARD_INDEX", cardIndex: number }
   | { type: "OPEN_CURRENT_PACK" }
-  
+  | { type: "ENABLE_GOD_PACK"; now?: number }
+  | { type: "DISABLE_GOD_PACK" }
+
+const GOD_PACK_COOLDOWN_MS = 5000 * 3;
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -231,22 +236,57 @@ const reducer = (state: State, action: Action): State => {
       };
     }
     case "OPEN_CURRENT_PACK": {
-      if (state.packs.available <= 0) return state;
-      const newCollection = addCardsToCollection(state.collection, state.packs.current.cards);
+      if (state.packs.available <= 0 || state.packs.current.opened) return state;
+
+      const now = Date.now();
+      const usedGodPack = state.packs.godPackEnabled;
+
       return {
         ...state,
-        collection: newCollection,
+        collection: addCardsToCollection(
+          state.collection,
+          state.packs.current.cards
+        ),
         packs: {
           ...state.packs,
           current: {
             ...state.packs.current,
-            opened: true
+            opened: true,
           },
-          lastOpened: Date.now(),
+          lastOpened: now,
           available: state.packs.available - 1,
+          godPackEnabled: false,
+          godPackCooldownEndsAt: usedGodPack
+            ? now + GOD_PACK_COOLDOWN_MS
+            : state.packs.godPackCooldownEndsAt,
         },
       };
     }
+    case "ENABLE_GOD_PACK": {
+      const now = action.now ?? Date.now();
+      const cooldownActive =
+        state.packs.godPackCooldownEndsAt !== null &&
+        now < state.packs.godPackCooldownEndsAt;
+
+      if (cooldownActive || state.packs.godPackEnabled) return state;
+
+      return {
+        ...state,
+        packs: {
+          ...state.packs,
+          godPackEnabled: true,
+        },
+      };
+    }
+
+    case "DISABLE_GOD_PACK":
+      return {
+        ...state,
+        packs: {
+          ...state.packs,
+          godPackEnabled: false,
+        },
+      };
     default: return state;
   }
 };
