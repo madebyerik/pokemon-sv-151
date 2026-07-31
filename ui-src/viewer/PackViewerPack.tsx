@@ -2,7 +2,7 @@ import { useRef } from "react";
 import * as THREE from "three";
 import { Sparkles } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { a, useSpring } from "@react-spring/three";
+import { a, useSpring, easings } from "@react-spring/three";
 import { Action, State } from "../reducer";
 
 import Pack from "./Pack";
@@ -24,6 +24,23 @@ const PackViewerPack = ({
 }) => {
   const { opened } = state.packs.current;
   const hoverRef = useRef<THREE.Group>(null!);
+
+  const { godPackEnabled } = state.packs;
+
+  const godPackPulse = useSpring({
+    from: { scale: [1, 1, 1] },
+    to: godPackEnabled
+      ? [
+          { scale: [1.05, 1.05, 1.05] },
+          { scale: [1, 1, 1] },
+        ]
+      : { scale: [1, 1, 1] },
+    reset: godPackEnabled,
+    config: {
+      duration: 500,
+      easing: easings.easeInOutQuad,
+    },
+  });
 
   // Pack rotation & scale spring
   const packRotationSpring = useSpring({
@@ -61,6 +78,17 @@ const PackViewerPack = ({
         position-y={packRotationSpring.positionY}
         position-z={packSlideSpring.positionZ}
         scale={(packRotationSpring as any).scale}>
+
+        {godPackEnabled && (
+          <Sparkles
+            position={[0, 1, -0.5]}
+            count={80}
+            size={3}
+            scale={[3, 4, 2]}
+            color="#ffd700"
+            speed={2}
+          />
+        )}
         <Sparkles 
           position={[0, 2, -0.5]} 
           count={15} 
@@ -69,11 +97,13 @@ const PackViewerPack = ({
           color={"#fff"} 
           speed={1} />
         <group ref={hoverRef} >
-          <Pack 
-            packRef={packRef} 
-            rotator={!opened} 
-            state={state} 
-            dispatch={dispatch} />
+          <a.group scale={godPackPulse.scale}>
+            <Pack 
+              packRef={packRef} 
+              rotator={!opened} 
+              state={state} 
+              dispatch={dispatch} />
+          </a.group>
         </group>
       </a.group>
     </group>

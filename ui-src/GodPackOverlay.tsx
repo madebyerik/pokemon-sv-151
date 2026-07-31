@@ -8,7 +8,7 @@ const GodPackOverlay = ({
   state: State;
 }) => {
   return (
-    state.packs.godPackEnabled
+    state.packs.godPackEnabled && !state.overlay.collectionVisible
     ? <div className="c-god-pack-overlay" aria-hidden="true" />
     : null
   );

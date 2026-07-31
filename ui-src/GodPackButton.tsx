@@ -2,7 +2,7 @@ import { a, useTransition } from "@react-spring/web";
 import { useEffect, useState } from "react";
 import type { Action, State } from "./reducer";
 import { getGodPack } from "./selectors";
-import PokeBall from "./svgs/pokeball.svg?react";
+import HyperRare from "./svgs/rarities/hyper-rare.svg?react";
 import Button from "./Button";
 
 const GodPackButton = ({
@@ -41,7 +41,7 @@ const GodPackButton = ({
       item && (
         <a.div style={style}>
           <Button
-            modifier={["icon", "circle"]}
+            modifier={["icon", "circle", "golden"]}
             disabled={isDisabled}
             aria-label="Enable god pack"
             aria-pressed={state.packs.godPackEnabled}
@@ -53,7 +53,7 @@ const GodPackButton = ({
               dispatch({ type: "SET_NEW_CURRENT_PACK", cards: getGodPack(state) });
             }}
           >
-            <PokeBall />
+            <HyperRare />
           </Button>
         </a.div>
       ),
