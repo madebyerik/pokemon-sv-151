@@ -25,12 +25,17 @@ const CollectionButton = ({
     <a.div style={style}>
       <Button
         modifier={["icon", "circle"]}
-        onClick={() =>
+        onClick={() => {
+          if (state.packs.godPackEnabled) {
+            dispatch({
+              type: "DISABLE_GOD_PACK"
+            });
+          }
           dispatch({
             type: "TOGGLE_COLLECTION_OVERLAY",
             visible: true
-          })
-        }>
+          });
+        }}>
         <PokeBall />
       </Button>
     </a.div>

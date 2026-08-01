@@ -9,7 +9,10 @@ const GodPackOverlay = ({
 }) => {
   return (
     state.packs.godPackEnabled && !state.overlay.collectionVisible
-    ? <div className="c-god-pack-overlay" aria-hidden="true" />
+    ? <div className="c-god-pack-overlay" aria-hidden="true">
+        <div className="c-god-pack-overlay__border" aria-hidden="true" />
+        <div className="c-god-pack-overlay__sheen" aria-hidden="true" />
+      </div>
     : null
   );
 };
