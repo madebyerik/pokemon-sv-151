@@ -142,7 +142,7 @@ export type Action =
   | { type: "ENABLE_GOD_PACK"; now?: number }
   | { type: "DISABLE_GOD_PACK" }
 
-const GOD_PACK_COOLDOWN_MS = 5000 * 3;
+const GOD_PACK_COOLDOWN_MS = 0;
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
